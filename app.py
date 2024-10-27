@@ -529,40 +529,52 @@ def toggle_user_status(user_id):
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
     session = Session()
-    categories = session.query(Category).all()
-    result = [{
-        'id': category.id,
-        'name': category.name,
-        'product_count': session.query(Product).filter_by(category_id=category.id).count()
-    } for category in categories]
-    session.close()
-    return jsonify(result)
+    try:
+        categories = session.query(Category).all()
+        result = [{
+            'id': category.id,
+            'name': category.name,
+            'product_count': session.query(Product).filter_by(category_id=category.id).count()
+        } for category in categories]
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        session.close()
 
 # Rute untuk menambah kategori baru
-@app.route('/api/categories', methods=['POST'])
+@app.route('/api/categories/add', methods=['POST'])
 @admin_required
 def add_category():
     data = request.json
     session = Session()
-    new_category = Category(name=data['name'])
-    session.add(new_category)
-    session.commit()
-    session.close()
-    return jsonify({'message': 'Kategori berhasil ditambahkan'}), 201
+    try:
+        new_category = Category(name=data['name'])
+        session.add(new_category)
+        session.commit()
+        return jsonify({'message': 'Kategori berhasil ditambahkan'}), 201
+    except Exception as e:
+        session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        session.close()
 
-# Rute untuk menghapus kategori
 @app.route('/api/categories/<int:category_id>', methods=['DELETE'])
 @admin_required
 def delete_category(category_id):
     session = Session()
-    category = session.query(Category).get(category_id)
-    if category:
-        session.delete(category)
-        session.commit()
+    try:
+        category = session.query(Category).get(category_id)
+        if category:
+            session.delete(category)
+            session.commit()
+            return jsonify({'message': 'Kategori berhasil dihapus'})
+        return jsonify({'error': 'Kategori tidak ditemukan'}), 404
+    except Exception as e:
+        session.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
         session.close()
-        return jsonify({'message': 'Kategori berhasil dihapus'})
-    session.close()
-    return jsonify({'error': 'Kategori tidak ditemukan'}), 404
 
 # Rute untuk mendapatkan laporan stok
 @app.route('/api/stock-report', methods=['GET'])
@@ -629,3 +641,4 @@ def generate_stock_report():
         as_attachment=True,
         attachment_filename='laporan_stok.pdf'
     )
+
