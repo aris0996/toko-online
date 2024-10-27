@@ -1,0 +1,156 @@
+# Mengabaikan file sistem operasi
+.DS_Store
+Thumbs.db
+
+# Mengabaikan direktori dependensi
+/node_modules
+/venv
+
+# Mengabaikan file konfigurasi lokal
+.env
+.env.local
+.env.*.local
+
+# Mengabaikan file log
+*.log
+
+# Mengabaikan file cache
+.cache
+.pytest_cache
+
+# Mengabaikan file build
+/build
+/dist
+
+# Mengabaikan file database
+*.sqlite3
+
+# Mengabaikan file media yang di-upload (jika ada)
+/media
+
+# Mengabaikan file statis yang dikompilasi (jika ada)
+
+
+# Mengabaikan file IDE dan editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Mengabaikan file kompilasi Python
+*.pyc
+__pycache__/
+
+# Mengabaikan file migrasi database (opsional, tergantung kebutuhan proyek)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Mengabaikan file coverage
+.coverage
+htmlcov/
+
+# Mengabaikan file temporary
+*.tmp
+
+# Virtual Environment
+myvenv/
+venv/
+env/
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Log files
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Dependency directories
+node_modules/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# dotenv environment variables file
+.env
+
+# Django stuff
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# Scrapy stuff
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Hapus atau komentari baris berikut jika ada
+# images/
+
+# Tambahkan pengecualian untuk folder images
+!images/
+!images/**

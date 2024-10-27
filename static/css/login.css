@@ -1,0 +1,123 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.login-title {
+    text-align: center;
+    color: #3498db;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    border-radius: 25px;
+    padding: 12px 20px;
+    border-radius: 0 25px 25px 0;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #42b549;
+    box-shadow: 0 0 0 0.2rem rgba(66, 181, 73, 0.25);
+}
+
+.input-group-text {
+    padding: 14.9px;
+    border-radius: 25px 0 0 25px;
+    background-color: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group-focus .input-group-text, .input-group-focus .form-control {
+    border-color: #42b549;
+}
+
+.btn-primary {
+    background-color: #42b549;
+    border-color: #42b549;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #3ca142;
+    border-color: #3ca142;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(66, 181, 73, 0.4);
+}
+
+.btn-outline-secondary {
+    padding: 14.9px;
+    border-radius: 0 25px 25px 0;
+    border: 2px solid #e0e0e0;
+    border-left: none;
+}
+
+.form-check-input:checked {
+    background-color: #42b549;
+    border-color: #42b549;
+}
+
+a {
+    color: #42b549;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #3ca142;
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@media (max-width: 576px) {
+    .login-container {
+        margin: 20px auto;
+        padding: 30px;
+    }
+}

@@ -1,0 +1,179 @@
+/* Variabel warna */
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #45a049;
+  --text-color: #333;
+  --bg-color: #f4f4f4;
+  --white: #fff;
+  --error-color: #f44336;
+  --success-color: #4CAF50;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.register-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.register-container h2 {
+  color: #42b549;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  position: relative;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.input-group-focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+  color: var(--white);
+}
+
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.8rem;
+  width: 100%;
+  transition: border-color 0.3s ease;
+  border-left: none;
+}
+
+.form-control:focus {
+  border-color: #ced4da;
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-register {
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.8rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.btn-register:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-outline-secondary {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  border-left: none;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f8f9fa;
+  color: #42b549;
+}
+
+a {
+  color: #42b549;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #3ca142;
+}
+
+/* Responsivitas */
+@media (max-width: 576px) {
+  .register-container {
+    margin: 20px auto;
+    padding: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container .row .col-md-6 {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .register-container {
+    width: 100%;
+    max-width: none;
+    margin: 50px 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .container .row .col-md-6 {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .register-container {
+    width: 100%;
+    max-width: none;
+    margin: 20px 0;
+    padding: 20px;
+  }
+}
+
+/* Tambahkan aturan media query baru untuk layar yang lebih kecil */
+@media (max-width: 767px) {
+  .container .row .col-md-6 {
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .register-container {
+    width: 100%;
+    max-width: none;
+    margin: 20px 0;
+    padding: 20px;
+  }
+}
+
+/* Tambahkan aturan untuk memastikan input group memiliki lebar yang benar */
+.input-group {
+  width: 100%;
+}
+
+/* Pastikan tombol memiliki lebar penuh */
+.btn-primary {
+  width: 100%;
+}
