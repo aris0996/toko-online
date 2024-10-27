@@ -16,6 +16,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from contextlib import contextmanager
+from flask import Blueprint
 
 # Inisialisasi logging
 logging.basicConfig(level=logging.DEBUG)
@@ -628,3 +629,44 @@ def session_scope():
         raise
     finally:
         session.close()
+
+# Rute untuk /api/categories
+@app.route('/api/categories', methods=['GET'])
+def get_categories_api():
+    with session_scope() as session:
+        categories = session.query(Category).all()
+        result = [{
+            'id': category.id,
+            'name': category.name,
+            'product_count': session.query(Product).filter_by(category_id=category.id).count()
+        } for category in categories]
+        return jsonify(result)
+
+# Rute untuk /category (tampilan halaman kategori)
+@app.route('/category', methods=['GET'])
+def category_page():
+    with session_scope() as session:
+        categories = session.query(Category).all()
+        return render_template('category.html', categories=categories)
+
+category_bp = Blueprint('category', __name__)
+
+@category_bp.route('/api/categories', methods=['GET'])
+def get_categories_api():
+    with session_scope() as session:
+        categories = session.query(Category).all()
+        result = [{
+            'id': category.id,
+            'name': category.name,
+            'product_count': session.query(Product).filter_by(category_id=category.id).count()
+        } for category in categories]
+        return jsonify(result)
+
+@category_bp.route('/category', methods=['GET'])
+def category_page():
+    with session_scope() as session:
+        categories = session.query(Category).all()
+        return render_template('category.html', categories=categories)
+
+# Di file utama app.py
+app.register_blueprint(category_bp)
