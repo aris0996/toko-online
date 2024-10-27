@@ -634,3 +634,37 @@ def generate_stock_report():
         attachment_filename='laporan_stok.pdf'
     )
 
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    with session_scope() as session:
+        products = session.query(Product).paginate(page=page, per_page=per_page, error_out=False)
+        result = [{
+            'id': product.id,
+            'name': product.name,
+            'description': product.description,
+            'price': product.price,
+            'qty': product.qty,
+            'category_id': product.category_id,
+            'discount': product.discount,
+            'image': f"data:image/jpeg;base64,{product.image}" if product.image else None
+        } for product in products.items]
+        return jsonify({
+            'products': result,
+            'total': products.total,
+            'pages': products.pages,
+            'current_page': page
+        })
+
+@contextmanager
+def session_scope():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
