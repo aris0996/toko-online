@@ -517,23 +517,6 @@ def toggle_user_status(user_id):
     session.close()
     return jsonify({'error': 'Pengguna tidak ditemukan'}), 404
 
-# Rute untuk mendapatkan daftar kategori
-@app.route('/api/categories', methods=['GET'])
-def get_categories():
-    session = Session()
-    try:
-        categories = session.query(Category).all()
-        result = [{
-            'id': category.id,
-            'name': category.name,
-            'product_count': session.query(Product).filter_by(category_id=category.id).count()
-        } for category in categories]
-        return jsonify(result)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-    finally:
-        session.close()
-
 # Rute untuk menambah kategori baru
 @app.route('/api/categories/add', methods=['POST'])
 @admin_required
@@ -633,29 +616,6 @@ def generate_stock_report():
         as_attachment=True,
         attachment_filename='laporan_stok.pdf'
     )
-
-@app.route('/api/products', methods=['GET'])
-def get_products():
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
-    with session_scope() as session:
-        products = session.query(Product).paginate(page=page, per_page=per_page, error_out=False)
-        result = [{
-            'id': product.id,
-            'name': product.name,
-            'description': product.description,
-            'price': product.price,
-            'qty': product.qty,
-            'category_id': product.category_id,
-            'discount': product.discount,
-            'image': f"data:image/jpeg;base64,{product.image}" if product.image else None
-        } for product in products.items]
-        return jsonify({
-            'products': result,
-            'total': products.total,
-            'pages': products.pages,
-            'current_page': page
-        })
 
 @contextmanager
 def session_scope():
