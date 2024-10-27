@@ -337,7 +337,7 @@
         fetch('/product')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Respon jaringan tidak baik');
                 }
                 return response.json();
             })
@@ -439,7 +439,7 @@
     document.getElementById('productTableBody').addEventListener('click', function(e) {
         if (e.target.classList.contains('edit-product') || e.target.parentElement.classList.contains('edit-product')) {
             const productId = e.target.closest('.edit-product').getAttribute('data-id');
-            fetch(`/product/${productId}`)
+            fetch(/product/${productId}`)
                 .then(response => response.json())
                 .then(product => {
                     document.getElementById('productId').value = product.id;
