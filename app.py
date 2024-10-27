@@ -15,6 +15,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
+from contextlib import contextmanager
 
 # Inisialisasi logging
 logging.basicConfig(level=logging.DEBUG)
@@ -362,15 +363,6 @@ def change_admin_password():
         return redirect(url_for('admin'))
     
     return render_template('change_admin_password.html')
-
-# Tambahkan rute untuk mendapatkan kategori
-@app.route('/category', methods=['GET'])
-def get_categories():
-    session = Session()
-    categories = session.query(Category).all()
-    result = [{'id': c.id, 'name': c.name} for c in categories]
-    session.close()
-    return jsonify(result)
 
 # Tambahkan rute untuk statistik pengunjung
 @app.route('/visitor_stats', methods=['GET'])
