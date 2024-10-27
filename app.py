@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, get_flashed_messages, session as flask_session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, get_flashed_messages, session as flask_session, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -10,6 +10,11 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 import base64
+from io import BytesIO
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
 
 # Inisialisasi logging
 logging.basicConfig(level=logging.DEBUG)
@@ -473,3 +478,154 @@ def delete_product(product_id):
         session.close()
         return jsonify({"error": f"Terjadi kesalahan saat menghapus produk: {str(e)}"}), 500
 
+# Rute untuk mendapatkan daftar pengguna
+@app.route('/api/users', methods=['GET'])
+@admin_required
+def get_users():
+    session = Session()
+    users = session.query(User).all()
+    result = [{
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'role': user.role,
+        'is_active': True  # Asumsikan semua pengguna aktif, sesuaikan jika ada field is_active
+    } for user in users]
+    session.close()
+    return jsonify(result)
+
+# Rute untuk menambah pengguna baru
+@app.route('/api/users', methods=['POST'])
+@admin_required
+def add_user():
+    data = request.json
+    session = Session()
+    new_user = User(
+        username=data['username'],
+        email=data['email'],
+        password=generate_password_hash(data['password']),
+        role=data['role']
+    )
+    session.add(new_user)
+    session.commit()
+    session.close()
+    return jsonify({'message': 'Pengguna berhasil ditambahkan'}), 201
+
+# Rute untuk mengubah status aktif/nonaktif pengguna
+@app.route('/api/users/<int:user_id>/toggle', methods=['POST'])
+@admin_required
+def toggle_user_status(user_id):
+    session = Session()
+    user = session.query(User).get(user_id)
+    if user:
+        user.is_active = not user.is_active
+        session.commit()
+        session.close()
+        return jsonify({'message': 'Status pengguna berhasil diubah'})
+    session.close()
+    return jsonify({'error': 'Pengguna tidak ditemukan'}), 404
+
+# Rute untuk mendapatkan daftar kategori
+@app.route('/api/categories', methods=['GET'])
+def get_categories():
+    session = Session()
+    categories = session.query(Category).all()
+    result = [{
+        'id': category.id,
+        'name': category.name,
+        'product_count': session.query(Product).filter_by(category_id=category.id).count()
+    } for category in categories]
+    session.close()
+    return jsonify(result)
+
+# Rute untuk menambah kategori baru
+@app.route('/api/categories', methods=['POST'])
+@admin_required
+def add_category():
+    data = request.json
+    session = Session()
+    new_category = Category(name=data['name'])
+    session.add(new_category)
+    session.commit()
+    session.close()
+    return jsonify({'message': 'Kategori berhasil ditambahkan'}), 201
+
+# Rute untuk menghapus kategori
+@app.route('/api/categories/<int:category_id>', methods=['DELETE'])
+@admin_required
+def delete_category(category_id):
+    session = Session()
+    category = session.query(Category).get(category_id)
+    if category:
+        session.delete(category)
+        session.commit()
+        session.close()
+        return jsonify({'message': 'Kategori berhasil dihapus'})
+    session.close()
+    return jsonify({'error': 'Kategori tidak ditemukan'}), 404
+
+# Rute untuk mendapatkan laporan stok
+@app.route('/api/stock-report', methods=['GET'])
+@admin_required
+def get_stock_report():
+    session = Session()
+    products = session.query(Product).all()
+    result = [{
+        'product_id': product.id,
+        'product_name': product.name,
+        'category': product.category.name if product.category else 'Tidak ada kategori',
+        'stock': product.qty
+    } for product in products]
+    session.close()
+    return jsonify(result)
+
+# Rute untuk menghasilkan laporan stok PDF
+@app.route('/api/generate-stock-report', methods=['GET'])
+@admin_required
+def generate_stock_report():
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    elements = []
+
+    session = Session()
+    products = session.query(Product).all()
+    data = [['ID', 'Nama Produk', 'Kategori', 'Stok']]
+    for product in products:
+        data.append([
+            product.id,
+            product.name,
+            product.category.name if product.category else 'Tidak ada kategori',
+            product.qty
+        ])
+    session.close()
+
+    table = Table(data)
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 12),
+        ('TOPPADDING', (0, 1), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ])
+    table.setStyle(style)
+    elements.append(table)
+
+    doc.build(elements)
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    return send_file(
+        BytesIO(pdf),
+        mimetype='application/pdf',
+        as_attachment=True,
+        attachment_filename='laporan_stok.pdf'
+    )

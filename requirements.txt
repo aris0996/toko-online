@@ -66,3 +66,4 @@ Werkzeug
 wheel
 wrapt
 yarl
+reportlab
