@@ -10,6 +10,8 @@
   --bg-color: #f8f9fa;
   --sidebar-bg: #2b2d42;
   --card-bg: #ffffff;
+  --navbar-height: 60px; /* Tinggi navbar utama */
+  --admin-navbar-height: 60px; /* Tinggi navbar admin */
 }
 
 /* Gaya umum yang diperbarui */
@@ -31,6 +33,7 @@ body {
   transition: all 0.3s ease;
   width: 250px;
   position: fixed;
+  top: var(--navbar-height);
   z-index: 1000;
 }
 
@@ -86,6 +89,7 @@ body {
 /* Gaya konten utama yang diperbarui */
 main {
   margin-left: 250px;
+  margin-top: calc(var(--navbar-height) + var(--admin-navbar-height));
   padding: 2rem;
   transition: all 0.3s ease;
 }
@@ -296,5 +300,46 @@ h1, h2, h3, h4, h5, h6 {
   
   .sidebar-toggle:hover {
     background: var(--secondary-color);
+  }
+}
+
+/* Style untuk navbar admin */
+.admin-navbar {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 250px; /* Sesuaikan dengan lebar sidebar */
+  right: 0;
+  height: var(--admin-navbar-height);
+  background: var(--card-bg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 999;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+/* Tambahkan media query untuk mobile */
+@media (max-width: 767.98px) {
+  .admin-navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .admin-navbar-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .admin-navbar-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  main {
+    margin-top: calc(var(--navbar-height) + var(--admin-navbar-height) + 20px);
   }
 }

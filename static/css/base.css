@@ -4,6 +4,7 @@
   --text-color: #333;
   --bg-color: #f4f4f4;
   --white: #fff;
+  --navbar-height: 60px;
 }
 
 body {
@@ -26,6 +27,7 @@ body {
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   padding: 15px 0;
+  height: var(--navbar-height);
 }
 
 .navbar-brand {
