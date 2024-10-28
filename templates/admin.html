@@ -653,4 +653,58 @@
         });
     });
 </script>
+<script>
+    // Implementasi edit pengguna
+    if (e.target.classList.contains('edit-user')) {
+        const userId = e.target.getAttribute('data-id');
+        fetch(`/api/users/${userId}`)
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editEmail').value = user.email;
+                document.getElementById('editRole').value = user.role;
+                $('#editUserModal').modal('show');
+            });
+    }
+
+    // Implementasi toggle status pengguna
+    if (e.target.classList.contains('toggle-user')) {
+        const userId = e.target.getAttribute('data-id');
+        fetch(`/api/users/${userId}/toggle`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadUsers(); // Muat ulang daftar pengguna
+        });
+    }
+
+    // Implementasi edit kategori
+    if (e.target.classList.contains('edit-category')) {
+        const categoryId = e.target.getAttribute('data-id');
+        fetch(`/api/categories/${categoryId}`)
+            .then(response => response.json())
+            .then(category => {
+                document.getElementById('editCategoryId').value = category.id;
+                document.getElementById('editCategoryName').value = category.name;
+                $('#editCategoryModal').modal('show');
+            });
+    }
+
+    // Implementasi hapus kategori
+    if (e.target.classList.contains('delete-category')) {
+        const categoryId = e.target.getAttribute('data-id');
+        if(confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
+            fetch(`/api/categories/${categoryId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadCategories(); // Muat ulang daftar kategori
+            });
+        }
+    }
+</script>
+
 {% endblock %}
