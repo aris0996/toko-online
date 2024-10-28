@@ -2,94 +2,711 @@
 
 {% block title %}Panel Admin{% endblock %}
 
-{% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-{% endblock %}
-
 {% block content %}
-<!-- Tambahkan navbar admin -->
-<nav class="admin-navbar">
-    <div class="admin-navbar-title">
-        <h1 class="h2 mb-0">Dashboard Admin</h1>
-    </div>
-    <div class="admin-navbar-actions">
-        <div class="d-flex align-items-center gap-3">
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="adminMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle"></i> Admin
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="adminMenuButton">
-                    <li><a class="dropdown-item" href="{{ url_for('change_admin_password') }}">
-                        <i class="bi bi-key"></i> Ubah Password
-                    </a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </a></li>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">
+                            <i class="bi bi-house-door"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#manajemen-produk">
+                            <i class="bi bi-box-seam"></i> Manajemen Produk
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#statistik-pengunjung">
+                            <i class="bi bi-graph-up"></i> Statistik Pengunjung
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('change_admin_password') }}">
+                            <i class="bi bi-key"></i> Ubah Kata Sandi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#manajemen-pengguna">
+                            <i class="bi bi-people"></i> Manajemen Pengguna
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#kategori-produk">
+                            <i class="bi bi-tags"></i> Kategori Produk
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#laporan-stok">
+                            <i class="bi bi-clipboard-data"></i> Laporan Stok
+                        </a>
+                    </li>
                 </ul>
+            </div>
+        </nav>
+
+        <!-- Konten Utama -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard Admin</h1>
+            </div>
+
+            <!-- Dashboard -->
+            <section id="dashboard" class="mb-5">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-primary text-white h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-box-seam"></i> Total Produk</h5>
+                                <p class="card-text display-4" id="totalProducts">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-success text-white h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-archive"></i> Total Stok</h5>
+                                <p class="card-text display-4" id="totalStock">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-info text-white h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-cash"></i> Nilai Inventaris</h5>
+                                <p class="card-text display-4" id="inventoryValue">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manajemen Produk -->
+            <section id="manajemen-produk" class="mb-5">
+                <h2 class="mb-3">Manajemen Produk</h2>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+                        <i class="bi bi-plus-circle"></i> Tambah Produk
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                                <th>Deskripsi</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <!-- Data produk akan diisi di sini menggunakan JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Statistik Pengunjung -->
+            <section id="statistik-pengunjung" class="mb-5">
+                <h2 class="mb-3">Statistik Pengunjung</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-warning text-dark h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-eye"></i> Total Kunjungan</h5>
+                                <p class="card-text display-4" id="totalVisits">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card bg-danger text-white h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-person"></i> Pengunjung Unik</h5>
+                                <p class="card-text display-4" id="uniqueVisitors">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="mt-4 mb-3">Kunjungan Terbaru</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>IP Address</th>
+                                <th>User Agent</th>
+                                <th>Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentVisitsBody">
+                            <!-- Data kunjungan terbaru akan diisi di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Manajemen Pengguna -->
+            <section id="manajemen-pengguna" class="mb-5">
+                <h2 class="mb-3">Manajemen Pengguna</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Peran</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- Data pengguna akan diisi di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Tambah Pengguna</button>
+            </section>
+
+            <!-- Kategori Produk -->
+            <section id="kategori-produk" class="mb-5">
+                <h2 class="mb-3">Kategori Produk</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Kategori</th>
+                                <th>Jumlah Produk</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoryTableBody">
+                            <!-- Data kategori akan diisi di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Tambah Kategori</button>
+            </section>
+
+            <!-- Laporan Stok -->
+            <section id="laporan-stok" class="mb-5">
+                <h2 class="mb-3">Laporan Stok</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID Produk</th>
+                                <th>Nama Produk</th>
+                                <th>Kategori</th>
+                                <th>Stok Tersedia</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTableBody">
+                            <!-- Data stok akan diisi di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" id="generateStockReport">Unduh Laporan Stok</button>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Modal Tambah/Edit Produk -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="productModalLabel">Tambah Produk</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm" enctype="multipart/form-data">
+                    <input type="hidden" id="productId" name="productId">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="description" name="description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="qty" class="form-label">Jumlah</label>
+                        <input type="number" class="form-control" id="qty" name="qty" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Kategori</label>
+                        <select class="form-control" id="category_id" name="category_id" required>
+                            <!-- Opsi kategori akan diisi secara dinamis -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="discount" class="form-label">Diskon</label>
+                        <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Gambar Produk</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="saveProduct">Simpan</button>
             </div>
         </div>
     </div>
-</nav>
+</div>
 
-<!-- Sidebar -->
-<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="#dashboard">
-                    <i class="bi bi-house-door"></i> Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#manajemen-produk">
-                    <i class="bi bi-box-seam"></i> Manajemen Produk
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#statistik-pengunjung">
-                    <i class="bi bi-graph-up"></i> Statistik Pengunjung
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('change_admin_password') }}">
-                    <i class="bi bi-key"></i> Ubah Kata Sandi
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout') }}">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#manajemen-pengguna">
-                    <i class="bi bi-people"></i> Manajemen Pengguna
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#kategori-produk">
-                    <i class="bi bi-tags"></i> Kategori Produk
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#laporan-stok">
-                    <i class="bi bi-clipboard-data"></i> Laporan Stok
-                </a>
-            </li>
-        </ul>
+<!-- Modal Tambah Pengguna -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Pengguna</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Peran</label>
+                        <select class="form-select" id="role" required>
+                            <option value="customer">Pelanggan</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+        </div>
     </div>
-</nav>
+</div>
 
-<!-- Konten Utama -->
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <!-- Hapus header yang lama karena sudah dipindah ke navbar admin -->
-    <!-- ... kode konten lainnya ... -->
-</main>
+<!-- Modal Tambah Kategori -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Kategori</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCategoryForm">
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Nama Kategori</label>
+                        <input type="text" class="form-control" id="categoryName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 <script>
-    // ... kode JavaScript yang sudah ada ...
+    // Fungsi untuk memuat semua produk
+    function loadProducts() {
+        fetch('/product')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Respon jaringan tidak baik');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById('productTableBody');
+                tableBody.innerHTML = '';
+                let totalStock = 0;
+                let totalValue = 0;
+                data.products.forEach(product => {
+                    const row = `
+                        <tr>
+                            <td>${product.id}</td>
+                            <td>${product.name}</td>
+                            <td>${product.description}</td>
+                            <td>Rp ${product.price.toLocaleString('id-ID')}</td>
+                            <td>${product.qty}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning edit-product" data-id="${product.id}">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                    totalStock += product.qty;
+                    totalValue += product.price * product.qty;
+                });
+
+                // Update dashboard statistics
+                document.getElementById('totalProducts').textContent = data.products.length;
+                document.getElementById('totalStock').textContent = totalStock;
+                document.getElementById('inventoryValue').textContent = `Rp ${totalValue.toLocaleString('id-ID')}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat data produk. Silakan coba lagi nanti.');
+            });
+    }
+
+    // Fungsi untuk memuat kategori
+    function loadCategories() {
+        fetch('/category')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const categorySelect = document.getElementById('category_id');
+                categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
+                data.forEach(category => {
+                    categorySelect.innerHTML += `<option value="${category.id}">${category.name}</option>`;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat kategori. Silakan coba lagi nanti.');
+            });
+    }
+
+    // Memuat produk saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProducts();
+        loadVisitorStats();
+        loadCategories();
+    });
+
+    // Fungsi untuk menambah atau mengedit produk
+    document.getElementById('saveProduct').addEventListener('click', function() {
+        const productId = document.getElementById('productId').value;
+        const formData = new FormData(document.getElementById('productForm'));
+
+        const url = productId ? `/product/${productId}` : '/product';
+        const method = productId ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadProducts();
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('productModalLabel').textContent = 'Tambah Produk';
+            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menyimpan produk. Silakan coba lagi.');
+        });
+    });
+
+    // Event listener untuk tombol edit dan hapus
+    document.getElementById('productTableBody').addEventListener('click', function(e) {
+        if (e.target.classList.contains('edit-product') || e.target.parentElement.classList.contains('edit-product')) {
+            const productId = e.target.closest('.edit-product').getAttribute('data-id');
+            fetch(`/product/${productId}`)
+                .then(response => response.json())
+                .then(product => {
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('name').value = product.name;
+                    document.getElementById('description').value = product.description;
+                    document.getElementById('price').value = product.price;
+                    document.getElementById('qty').value = product.qty;
+                    document.getElementById('productModalLabel').textContent = 'Edit Produk';
+                    new bootstrap.Modal(document.getElementById('productModal')).show();
+                });
+        } else if (e.target.classList.contains('delete-product') || e.target.parentElement.classList.contains('delete-product')) {
+            if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                const productId = e.target.closest('.delete-product').getAttribute('data-id');
+                fetch(`/product/${productId}`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(() => loadProducts());
+            }
+        }
+    });
+
+    // Event listener untuk tombol tambah produk
+    document.querySelector('[data-bs-target="#productModal"]').addEventListener('click', function() {
+        document.getElementById('productForm').reset();
+        document.getElementById('productId').value = '';
+        document.getElementById('productModalLabel').textContent = 'Tambah Produk';
+    });
+
+    // Fungsi untuk memuat statistik pengunjung
+    function loadVisitorStats() {
+        fetch('/visitor_stats')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('totalVisits').textContent = data.total_visits;
+                document.getElementById('uniqueVisitors').textContent = data.unique_visitors;
+
+                const recentVisitsBody = document.getElementById('recentVisitsBody');
+                recentVisitsBody.innerHTML = '';
+                data.recent_visits.forEach(visit => {
+                    const row = `
+                        <tr>
+                            <td>${visit.ip_address}</td>
+                            <td>${visit.user_agent}</td>
+                            <td>${visit.timestamp}</td>
+                        </tr>
+                    `;
+                    recentVisitsBody.innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat statistik pengunjung. Silakan coba lagi nanti.');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fungsi untuk memuat data pengguna
+        function loadUsers() {
+            fetch('/api/users')
+                .then(response => response.json())
+                .then(data => {
+                    const userTableBody = document.getElementById('userTableBody');
+                    userTableBody.innerHTML = '';
+                    data.forEach(user => {
+                        const row = `
+                            <tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.email}</td>
+                                <td>${user.role}</td>
+                                <td>${user.is_active ? 'Aktif' : 'Nonaktif'}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary edit-user" data-id="${user.id}">Edit</button>
+                                    <button class="btn btn-sm btn-danger toggle-user" data-id="${user.id}">${user.is_active ? 'Nonaktifkan' : 'Aktifkan'}</button>
+                                </td>
+                            </tr>
+                        `;
+                        userTableBody.innerHTML += row;
+                    });
+                });
+        }
+
+        // Fungsi untuk memuat data kategori
+        function loadCategories() {
+            fetch('/api/categories')
+                .then(response => response.json())
+                .then(data => {
+                    const categoryTableBody = document.getElementById('categoryTableBody');
+                    categoryTableBody.innerHTML = '';
+                    data.forEach(category => {
+                        const row = `
+                            <tr>
+                                <td>${category.id}</td>
+                                <td>${category.name}</td>
+                                <td>${category.product_count}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary edit-category" data-id="${category.id}">Edit</button>
+                                    <button class="btn btn-sm btn-danger delete-category" data-id="${category.id}">Hapus</button>
+                                </td>
+                            </tr>
+                        `;
+                        categoryTableBody.innerHTML += row;
+                    });
+                });
+        }
+
+        // Fungsi untuk memuat laporan stok
+        function loadStockReport() {
+            fetch('/api/stock-report')
+                .then(response => response.json())
+                .then(data => {
+                    const stockTableBody = document.getElementById('stockTableBody');
+                    stockTableBody.innerHTML = '';
+                    data.forEach(item => {
+                        const row = `
+                            <tr>
+                                <td>${item.product_id}</td>
+                                <td>${item.product_name}</td>
+                                <td>${item.category}</td>
+                                <td>${item.stock}</td>
+                                <td>${item.stock > 0 ? 'Tersedia' : 'Habis'}</td>
+                            </tr>
+                        `;
+                        stockTableBody.innerHTML += row;
+                    });
+                });
+        }
+
+        // Memuat data saat halaman dimuat
+        loadUsers();
+        loadCategories();
+        loadStockReport();
+
+        // Event listener untuk form tambah pengguna
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                role: document.getElementById('role').value
+            };
+            fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadUsers();
+                $('#addUserModal').modal('hide');
+            });
+        });
+
+        // Event listener untuk form tambah kategori
+        document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const categoryData = {
+                name: document.getElementById('categoryName').value
+            };
+            fetch('/api/categories', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(categoryData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadCategories();
+                $('#addCategoryModal').modal('hide');
+            });
+        });
+
+        // Event listener untuk tombol unduh laporan stok
+        document.getElementById('generateStockReport').addEventListener('click', function() {
+            fetch('/api/generate-stock-report')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'laporan_stok.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+        });
+
+        // Event delegation untuk tombol edit dan hapus
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('edit-user')) {
+                const userId = e.target.getAttribute('data-id');
+                // Implementasi edit pengguna
+            } else if (e.target.classList.contains('toggle-user')) {
+                const userId = e.target.getAttribute('data-id');
+                // Implementasi toggle status pengguna
+            } else if (e.target.classList.contains('edit-category')) {
+                const categoryId = e.target.getAttribute('data-id');
+                // Implementasi edit kategori
+            } else if (e.target.classList.contains('delete-category')) {
+                const categoryId = e.target.getAttribute('data-id');
+                // Implementasi hapus kategori
+            }
+        });
+    });
 </script>
+<script>
+    // Implementasi edit pengguna
+    if (e.target.classList.contains('edit-user')) {
+        const userId = e.target.getAttribute('data-id');
+        fetch(`/api/users/${userId}`)
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editEmail').value = user.email;
+                document.getElementById('editRole').value = user.role;
+                $('#editUserModal').modal('show');
+            });
+    }
+
+    // Implementasi toggle status pengguna
+    if (e.target.classList.contains('toggle-user')) {
+        const userId = e.target.getAttribute('data-id');
+        fetch(`/api/users/${userId}/toggle`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadUsers(); // Muat ulang daftar pengguna
+        });
+    }
+
+    // Implementasi edit kategori
+    if (e.target.classList.contains('edit-category')) {
+        const categoryId = e.target.getAttribute('data-id');
+        fetch(`/api/categories/${categoryId}`)
+            .then(response => response.json())
+            .then(category => {
+                document.getElementById('editCategoryId').value = category.id;
+                document.getElementById('editCategoryName').value = category.name;
+                $('#editCategoryModal').modal('show');
+            });
+    }
+
+    // Implementasi hapus kategori
+    if (e.target.classList.contains('delete-category')) {
+        const categoryId = e.target.getAttribute('data-id');
+        if(confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
+            fetch(`/api/categories/${categoryId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadCategories(); // Muat ulang daftar kategori
+            });
+        }
+    }
+</script>
+
 {% endblock %}
+

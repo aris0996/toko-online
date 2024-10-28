@@ -1,23 +1,19 @@
 /* Variabel warna */
 :root {
-  --primary-color: #4361ee;
-  --secondary-color: #3f37c9;
-  --success-color: #4bb543;
-  --danger-color: #dc3545;
-  --warning-color: #ffc107;
-  --info-color: #0dcaf0;
-  --text-color: #2b2d42;
-  --bg-color: #f8f9fa;
-  --sidebar-bg: #2b2d42;
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --background-color: #ecf0f1;
+  --text-color: #34495e;
+  --sidebar-bg: #2c3e50;
+  --sidebar-text: #ecf0f1;
   --card-bg: #ffffff;
-  --navbar-height: 60px; /* Tinggi navbar utama */
-  --admin-navbar-height: 60px; /* Tinggi navbar admin */
+  --hover-color: #2980b9;
 }
 
-/* Gaya umum yang diperbarui */
+/* Gaya umum */
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
 }
@@ -26,15 +22,15 @@ body {
   padding: 20px;
 }
 
-/* Gaya sidebar yang diperbarui */
+/* Gaya sidebar */
 #sidebar {
-  background: var(--sidebar-bg);
+  background-color: #2c3e50;
+  color: #ecf0f1;
   min-height: 100vh;
-  transition: all 0.3s ease;
-  width: 250px;
-  position: fixed;
-  top: var(--navbar-height);
-  z-index: 1000;
+  transition: all 0.3s;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  width: 60px;
+  overflow: hidden;
 }
 
 #sidebar:hover {
@@ -42,10 +38,15 @@ body {
 }
 
 #sidebar .navbar-brand {
-  padding: 1.5rem 1rem;
-  color: #fff;
-  font-size: 1.25rem;
+  color: #ecf0f1;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 20px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
 }
 
 #sidebar .navbar-brand img {
@@ -54,23 +55,20 @@ body {
 }
 
 #sidebar .nav-link {
-  padding: 0.8rem 1rem;
-  color: rgba(255,255,255,0.8);
+  color: #ecf0f1;
+  padding: 15px 20px;
+  border-radius: 0;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  transition: all 0.3s ease;
-}
-
-#sidebar .nav-link:hover,
-#sidebar .nav-link.active {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  transform: translateX(5px);
+  white-space: nowrap;
 }
 
 #sidebar .nav-link i {
-  font-size: 1.1rem;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
 }
 
 #sidebar .nav-link span {
@@ -82,16 +80,23 @@ body {
   opacity: 1;
 }
 
+#sidebar .nav-link:hover,
+#sidebar .nav-link.active {
+  background-color: #34495e;
+  color: #3498db;
+}
+
 #sidebar .nav-item {
   margin-bottom: 5px;
 }
 
-/* Gaya konten utama yang diperbarui */
+/* Gaya konten utama */
 main {
-  margin-left: 250px;
-  margin-top: calc(var(--navbar-height) + var(--admin-navbar-height));
-  padding: 2rem;
-  transition: all 0.3s ease;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: margin-left 0.3s;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -99,21 +104,21 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 20px;
 }
 
-/* Gaya kartu yang diperbarui */
+/* Gaya kartu */
 .card {
   border: none;
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 1rem 2rem rgba(0,0,0,0.12);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-body {
-  padding: 1.5rem;
+  padding: 20px;
 }
 
 .card-title {
@@ -122,45 +127,41 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 15px;
 }
 
-/* Gaya tabel yang diperbarui */
+/* Gaya tabel */
 .table {
-  background: #fff;
-  border-radius: 0.5rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
   overflow: hidden;
 }
 
 .table thead th {
-  background: var(--primary-color);
-  color: #fff;
-  font-weight: 500;
+  background-color: var(--primary-color);
+  color: var(--card-bg);
   border: none;
-  padding: 1rem;
 }
 
-.table td {
-  padding: 1rem;
-  vertical-align: middle;
+.table-hover tbody tr:hover {
+  background-color: rgba(52, 152, 219, 0.1);
 }
 
-/* Gaya tombol yang diperbarui */
+/* Gaya tombol */
 .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
+  border-radius: 5px;
+  padding: 8px 15px;
   transition: all 0.3s ease;
 }
 
 .btn-primary {
-  background: var(--primary-color);
-  border: none;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
-  background: var(--secondary-color);
-  transform: translateY(-2px);
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
 }
 
-/* Gaya form yang diperbarui */
+/* Gaya form */
 .form-control {
   border-radius: 5px;
   border: 1px solid #ced4da;
@@ -171,10 +172,10 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
 
-/* Gaya modal yang diperbarui */
+/* Gaya modal */
 .modal-content {
+  border-radius: 8px;
   border: none;
-  border-radius: 1rem;
 }
 
 .modal-header {
@@ -187,159 +188,87 @@ h1, h2, h3, h4, h5, h6 {
   border-top: none;
 }
 
-/* Responsif yang diperbarui */
-@media (max-width: 991.98px) {
+/* Responsif */
+@media (max-width: 768px) {
   #sidebar {
-    width: 0;
-    transform: translateX(-100%);
+    width: 60px;
   }
-  
-  #sidebar.active {
-    width: 250px;
-    transform: translateX(0);
-  }
-  
-  main {
-    margin-left: 0;
-    padding: 1rem;
-  }
-  
-  .navbar-toggler {
-    display: block;
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1050;
-    background: var(--primary-color);
-    border: none;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: #fff;
-  }
-  
-  .card {
-    margin-bottom: 1rem;
-  }
-  
-  .table-responsive {
-    border-radius: 0.5rem;
-    overflow-x: auto;
-  }
-  
-  .table td, .table th {
-    white-space: nowrap;
-  }
-}
 
-@media (max-width: 767.98px) {
-  .container-fluid {
-    padding: 0.5rem;
+  #sidebar:hover {
+    width: 200px;
   }
-  
-  .card-body {
-    padding: 1rem;
+
+  #sidebar .navbar-brand {
+    padding: 15px 0;
+    font-size: 1.2rem;
   }
-  
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding: 1rem;
+
+  #sidebar .navbar-brand span {
+    display: none;
   }
-  
-  .btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
+
+  #sidebar .nav-link {
+    padding: 15px 0;
+    justify-content: center;
   }
-  
-  h2 {
+
+  #sidebar:hover .nav-link {
+    justify-content: flex-start;
+    padding: 15px 20px;
+  }
+
+  #sidebar .nav-link i {
+    margin-right: 0;
     font-size: 1.5rem;
   }
-  
-  .table td, .table th {
-    padding: 0.75rem;
+
+  #sidebar:hover .nav-link i {
+    margin-right: 10px;
+  }
+
+  #sidebar .nav-link span {
     font-size: 0.9rem;
-  }
-}
-
-/* Animasi tambahan */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card, .table {
-  animation: slideIn 0.5s ease forwards;
-}
-
-/* Toggle sidebar button */
-.sidebar-toggle {
-  display: none;
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1050;
-  background: var(--primary-color);
-  border: none;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-@media (max-width: 991.98px) {
-  .sidebar-toggle {
-    display: block;
-  }
-  
-  .sidebar-toggle:hover {
-    background: var(--secondary-color);
-  }
-}
-
-/* Style untuk navbar admin */
-.admin-navbar {
-  position: fixed;
-  top: var(--navbar-height);
-  left: 250px; /* Sesuaikan dengan lebar sidebar */
-  right: 0;
-  height: var(--admin-navbar-height);
-  background: var(--card-bg);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  z-index: 999;
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.3s ease;
-}
-
-/* Tambahkan media query untuk mobile */
-@media (max-width: 767.98px) {
-  .admin-navbar {
-    flex-direction: column;
-    height: auto;
-    padding: 0.5rem;
-  }
-
-  .admin-navbar-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .admin-navbar-actions {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
   }
 
   main {
-    margin-top: calc(var(--navbar-height) + var(--admin-navbar-height) + 20px);
+    margin-left: 60px;
+    transition: margin-left 0.3s;
+  }
+
+  #sidebar:hover + main {
+    margin-left: 200px;
+  }
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+#sidebar .nav-item {
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+#sidebar .nav-item:nth-child(1) { animation-delay: 0.1s; }
+#sidebar .nav-item:nth-child(2) { animation-delay: 0.2s; }
+#sidebar .nav-item:nth-child(3) { animation-delay: 0.3s; }
+#sidebar .nav-item:nth-child(4) { animation-delay: 0.4s; }
+#sidebar .nav-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Gaya tambahan untuk konten utama */
+main {
+  transition: margin-left 0.3s;
+  margin-left: 60px;
+}
+
+#sidebar:hover + main {
+  margin-left: 250px;
+}
+
+@media (min-width: 769px) {
+  #sidebar:hover + main {
+    margin-left: 250px;
   }
 }
